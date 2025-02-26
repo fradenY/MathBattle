@@ -1,0 +1,470 @@
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-color: hsla(0, 0%, 100%, .3) transparent;
+  scrollbar-width: auto;
+}
+html, body {
+  margin: 0;
+  padding: 20px;
+  font-family: 'Orbitron', 'Arial', sans-serif; /* Futuristic font */
+  background: black; 
+  height: 100%;
+  color: #e0e0e0; /* Light gray text */
+  overflow: auto; /* Changed to allow scrolling if content overflows */
+}
+
+/* Links */
+a:link, a:visited {
+  color: #00ccff; /* Neon cyan */
+  text-decoration: none;
+}
+a:hover, a:active {
+  color: #00ffcc; /* Brighter cyan */
+  text-decoration: underline;
+}
+
+/* Welcome/Settings Page */
+#welcome {
+  width: 90%;
+  height: auto;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #2c2c2c; /* Darker gray */
+  border-radius: 10px;
+  box-shadow: 0 0 70px rgba(0, 204, 255, 0.3);
+  text-align: center;
+  border: 2px solid #00ccff; /* Neon cyan border */
+  position: relative; /* Relative for natural flow */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+#welcome h1 {
+  font-size: 2.5em;
+  color: #00ffcc; /* Neon cyan-green */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0px;
+}
+
+#welcome p {
+  font-size: 1.2em;
+  color: #b0b0b0; /* Muted gray */
+  margin: 0px;
+}
+
+#welcome dl {
+  margin: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#welcome dt {
+  font-weight: 600;
+  color: #e0e0e0; /* Light gray */
+  margin: 3px 0px;
+}
+
+#welcome dd {
+  margin: 3px 0 3px 24px;
+  color: #a0a0a0; /* Slightly darker gray */
+}
+
+#welcome input[type="text"] {
+  width: 60px;
+  padding: 8px;
+  border: 2px solid #00ccff; /* Neon cyan border */
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1em;
+  margin: 0 5px;
+  background: #1a1a1a; /* Darker background for contrast */
+  color: #00ffcc; /* Neon cyan-green text */
+  box-shadow: 0 0 5px rgba(0, 204, 255, 0.3); /* Subtle cyan glow */
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+#welcome input[type="text"]:focus {
+  border-color: #00ffcc; /* Brighter cyan on focus */
+  box-shadow: 0 0 10px rgba(0, 255, 204, 0.7); /* Stronger glow */
+  transform: scale(1.05); /* Slight scale for interaction */
+  outline: none;
+}
+
+#welcome select {
+  margin: 5px 0;
+  padding: 8px 12px; /* Added horizontal padding for better look */
+  border: 2px solid #00ccff; /* Neon cyan border */
+  border-radius: 3px;
+  font-size: 1em;
+  background: #1a1a1a; /* Darker background for contrast */
+  color: #00ffcc; /* Neon cyan-green text */
+  cursor: pointer;
+  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 3px rgba(0, 204, 255, 0.5); /* Subtle glow */
+  appearance: none; /* Remove default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  padding-right: 30px; /* Space for custom arrow */
+}
+
+#welcome select:focus {
+  border-color: #00ccff;
+  outline: none;
+}
+
+#welcome input[type="submit"],
+#welcome button {
+  padding: 12px 25px;
+  font-size: 1.1em;
+  color: #1a1a1a;
+  background: #00ccff; /* Neon cyan */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 5px;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+  position: relative; /* Relative for flow */
+}
+
+#welcome input[type="submit"]:hover,
+#welcome button:hover {
+  background: #00ffcc;
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
+}
+
+#welcome input[type="checkbox"] {
+  -webkit-appearance: none; /* Remove default checkbox */
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #3a3a3a; /* Slightly lighter gray */
+  border: 2px solid #00ccff; /* Neon cyan border */
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s;
+  vertical-align: middle; /* Align with label text */
+}
+
+#welcome input[type="checkbox"]:checked {
+  background: #00ccff; /* Neon cyan when checked */
+  box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+}
+
+#welcome input[type="checkbox"]:checked::after {
+  content: '\2714'; /* Checkmark symbol */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: #1a1a1a; /* Dark text for contrast */
+}
+
+#welcome input[type="checkbox"]:hover {
+  box-shadow: 0 0 8px rgba(0, 204, 255, 0.7);
+}
+
+/* Game Page */
+#game {
+  width: 90%;
+  max-width: 650px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #252525; /* Dark gray */
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(255, 87, 34, 0.3); /* Neon orange glow */
+  position: relative; /* Relative for natural flow */
+  min-height: 350px;
+  border: 2px solid #ff5722; /* Neon orange border */
+}
+
+#game .left,
+#game .correct {
+  font-size: 1.4em;
+  font-weight: 600;
+  color: #ff5722; /* Neon orange */
+  position: relative; /* Changed to relative */
+  display: inline-block; /* Ensure they flow naturally */
+  background: #3a3a3a;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
+  margin: 10px 0; /* Add spacing */
+}
+
+#game .banner {
+  text-align: center;
+  margin-top: 20px;
+  padding: 20px;
+  background: #303030;
+  border-radius: 8px;
+  border: 1px solid #ff5722;
+  position: relative;
+}
+
+#game .problem {
+  font-size: 2.5em;
+  color: #00ccff; /* Neon cyan */
+  margin-right: 10px;
+  letter-spacing: 1px;
+}
+
+#game .equals {
+  font-size: 2.5em;
+  color: #ff5722; /* Neon orange to match */
+  margin: 0 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+#game .answer {
+  font-size: 2em;
+  width: 150px;
+  padding: 10px;
+  border: 2px solid #404040;
+  border-radius: 5px;
+  text-align: center;
+  background: #3a3a3a;
+  color: #e0e0e0;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  position: relative; /* Relative for flow */
+}
+
+#game .answer:focus {
+  border-color: #00ccff;
+  box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+  outline: none;
+  -webkit-appearance: none; /* Remove spin buttons */
+  -moz-appearance: textfield; /* Remove spin buttons in Firefox */
+}
+
+#game .answer::-webkit-inner-spin-button,
+#game .answer::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Explicitly remove spin buttons */
+  margin: 0;
+}
+
+#game .end {
+  padding: 20px;
+  position: relative; /* Relative for flow */
+}
+
+#game #winner_text {
+  font-size: 1.8em;
+  color: #ff5722; /* Neon orange */
+  font-weight: bold;
+  margin: 10px 0;
+  letter-spacing: 1px;
+  position: relative; /* Relative for flow */
+}
+
+#game .end p {
+  font-size: 1.1em;
+  margin: 10px 0;
+  color: #e0e0e0;
+  position: relative; /* Relative for flow */
+}
+
+#game .end button {
+  padding: 10px 20px;
+  font-size: 1.1em;
+  color: #1a1a1a;
+  background: #ff5722; /* Neon orange */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px 10px; /* Reduced margin for better fit */
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 0 10px rgba(255, 87, 34, 0.5);
+  position: relative; /* Relative for flow */
+  display: inline-block; /* Ensure visibility */
+}
+
+#game .end button:hover {
+  background: #ff7043; /* Lighter orange */
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(255, 112, 67, 0.7);
+}
+
+#multiplayer-status {
+  margin: 20px 0;
+  font-size: 1.1em;
+  color: #b0b0b0;
+  text-align: left;
+  background: #3a3a3a;
+  padding: 5px;
+  border-radius: 5px;
+  position: relative;
+  white-space: pre-line;
+}
+
+/* Room Setup */
+#room_setup {
+  text-align: center;
+  margin-top: 20px; /* Reduced to fit better */
+  position: relative; /* Relative for flow */
+}
+
+#nickname {
+  padding: 10px;
+  font-size: 1.1em;
+  border: 2px solid #404040;
+  border-radius: 5px;
+  width: 200px;
+  margin: 10px;
+  background: #3a3a3a;
+  color: #e0e0e0;
+  transition: border-color 0.3s;
+  position: relative; /* Relative for flow */
+}
+
+#nickname:focus {
+  border-color: #00ccff;
+  outline: none;
+}
+
+#ready_btn {
+  padding: 10px 20px;
+  font-size: 1.1em;
+  color: #1a1a1a;
+  background: #ff5722; /* Neon orange */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 0 10px rgba(255, 87, 34, 0.5);
+  position: relative; /* Relative for flow */
+}
+
+#ready_btn:hover {
+  background: #ff7043;
+  transform: translateY(-2px);
+}
+
+#ready_btn:disabled {
+  background: #606060;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+#players_list {
+  margin-top: 15px;
+  font-size: 1.1em;
+  color: #00ccff;
+  background: #3a3a3a;
+  padding: 8px;
+  border-radius: 5px;
+  position: relative; /* Relative for flow */
+}
+
+/* Countdown */
+#countdown {
+  font-size: 3em;
+  color: #ff5722;
+  text-align: center;
+  margin-top: 20px; /* Reduced to fit better */
+  letter-spacing: 2px;
+  position: relative; /* Relative for flow */
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  #welcome, #game {
+    width: 95%;
+    margin: 20px auto;
+    padding: 15px;
+  }
+
+  #welcome h1 {
+    font-size: 2em;
+  }
+
+  #welcome p {
+    font-size: 1em;
+  }
+
+  #welcome input[type="text"] {
+    width: 50px;
+    padding: 6px;
+  }
+
+  #welcome input[type="submit"],
+  #welcome button {
+    padding: 10px 20px;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #welcome dl {
+    margin: 10px 0;
+  }
+
+  #welcome dd {
+    margin: 0 0 10px 15px;
+    font-size: 0.9em;
+  }
+
+  #game .problem {
+    font-size: 2em;
+  }
+
+  #game .equals {
+    font-size: 2em; /* Match problem size on mobile */
+    margin: 0 5px; /* Smaller spacing */
+  }
+
+  #game .answer {
+    width: 120px;
+    font-size: 1.5em;
+    padding: 8px;
+  }
+
+  #game .left,
+  #game .correct {
+    font-size: 1.2em;
+    margin: 5px 0; /* Adjusted for mobile */
+  }
+
+  #game .banner {
+    margin-top: 10px; /* Further reduced for mobile */
+  }
+
+  #multiplayer-status {
+    font-size: 0.9em;
+  }
+
+  #nickname {
+    width: 180px;
+    font-size: 1em;
+  }
+
+  #ready_btn {
+    padding: 8px 15px;
+    font-size: 1em;
+  }
+
+  #countdown {
+    font-size: 2.5em;
+    margin-top: 10px; /* Adjusted for mobile */
+  }
+
+  #game .end button {
+    padding: 8px 15px;
+    font-size: 1em;
+    margin: 5px 5px; /* Smaller margins for mobile */
+  }
+}

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Arithmetic Game – Online Speed Drill</title>
+    <link href="app.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="game">
+      <span class="left">Seconds left:</span>
+      <span class="correct">Score: 0</span>
+      <div id="room_setup" style="display: none;">
+        <label for="nickname">Enter your nickname:</label>
+        <input type="text" id="nickname" placeholder="Your nickname">
+        <button id="ready_btn">Ready</button>
+      </div>
+      <div id="countdown" style="display: none;"></div>
+      <div class="banner">
+        <div class="start">
+          <span class="problem"></span>
+          <span class="equals">=</span>
+          <input type="number" class="answer">
+        </div>
+        <div class="end" style="display: none;">
+          <p id="winner_text"></p>
+          <p>
+            <button id="try_again_btn">Try Again</button>
+            or
+            <button id="settings_btn">Change Settings</button>
+          </p>
+        </div>
+      </div>
+      <div id="multiplayer-status"></div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+    <script>
+      function getQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        let settings = {};
+        params.forEach(function(value, key) {
+          if (!isNaN(value) && value.trim() !== "") {
+            settings[key] = parseInt(value, 10);
+          } else {
+            settings[key] = value;
+          }
+        });
+        return settings;
+      }
+
+      const settings = getQueryParams();
+      console.log('Parsed Settings:', settings);
+
+      $(document).ready(function() {
+        Arithmetic.init(settings);
+
+        const roomId = settings.room;
+        if (roomId) {
+          alert(`You have joined the room: ${roomId}`);
+          $('#room_setup').show();
+          $('.banner').hide();
+          window.socket = io();
+
+          window.socket.on('connect', () => {
+            console.log('Connected to server with ID:', window.socket.id);
+            window.socket.emit('joinRoom', { roomId, settings });
+            $('#nickname').focus();
+          });
+
+          $('#ready_btn').click(function() {
+            const nickname = $('#nickname').val().trim();
+            if (!nickname) {
+              alert('Please enter a nickname!');
+              return;
+            }
+            window.socket.emit('playerReady', { roomId, nickname });
+            $('#nickname').prop('disabled', true);
+            $('#ready_btn').prop('disabled', true).text('Waiting...');
+          });
+
+          window.socket.on('updatePlayers', (players) => {
+            const playerList = players.map(p => `${p.nickname} (${p.ready ? 'Ready' : 'Not Ready'})`).join('\n');
+            $('#multiplayer-status').text(`Players in room:\n${playerList}`);
+          });
+
+          window.socket.on('startCountdown', () => {
+            $('#room_setup').hide();
+            $('#countdown').show();
+            let count = 3;
+            $('#countdown').text(count);
+            const countdownTimer = setInterval(() => {
+              count--;
+              if (count > 0) {
+                $('#countdown').text(count);
+              } else {
+                clearInterval(countdownTimer);
+                $('#countdown').hide();
+                $('.banner').show();
+                window.socket.emit('startGame', { roomId });
+              }
+            }, 1000);
+          });
+
+          window.socket.on('playerJoined', (players) => {
+            console.log('Players in room:', players);
+            const playerList = players.map(p => `${p.nickname}`).join('\n');
+            $('#multiplayer-status').text(`Players in room:\n${playerList}`);
+          });
+
+          window.socket.on('gameStarted', (data) => {
+            console.log('Game started:', data);
+            Arithmetic.updateProblem(data.problem);
+          });
+
+          window.socket.on('updateTime', (time) => {
+            $('.left').text(`Seconds left: ${time}`);
+          });
+
+          window.socket.on('updateProblem', (problem) => {
+            Arithmetic.updateProblem(problem);
+          });
+
+          window.socket.on('updateScore', (scores) => {
+            console.log('Scores:', scores);
+            const myNickname = $('#nickname').val().trim() || "Player " + (rooms[roomId]?.players.findIndex(p => p.id === window.socket.id) + 1);
+            Arithmetic.updateScore(scores[myNickname] || 0);
+            let scoreText = 'Scores:\n';
+            for (const [nickname, score] of Object.entries(scores)) {
+              scoreText += `${nickname}: ${score}\n`;
+            }
+            $('#multiplayer-status').text(scoreText.trim());
+          });
+
+          window.socket.on('gameOver', ({ scores, winner }) => {
+            console.log('Game Over:', scores, 'Winner:', winner);
+            const myNickname = $('#nickname').val().trim() || "Player " + (rooms[roomId]?.players.findIndex(p => p.id === window.socket.id) + 1);
+            Arithmetic.endGame(scores[myNickname] || 0);
+            $('#winner_text').text(winner === "No winner" ? "No winner" : `${winner} is WINNER!`);
+          });
+
+          $('#try_again_btn').click(function() {
+            const queryString = window.location.search.includes('room') ? window.location.search : "?room=" + roomId;
+            window.open("index.html" + queryString, "_self");
+          });
+
+          $('#settings_btn').click(function() {
+            window.open("/math_multiplayer.html", "_self");
+          });
+        } else {
+          $('.banner').show();
+        }
+      });
+    </script>
+  </body>
+</html>

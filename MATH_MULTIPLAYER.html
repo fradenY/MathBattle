@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Battle</title>
+  <link rel="stylesheet" type="text/css" href="app.css">
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="welcome">
+    <h1>Math Battle</h1>
+    <p>Extremely Competitive Arithmetic Game!</p>
+
+    <form id="gameSettingsForm" class="game-options">
+      <dl>
+        <dt>
+          <label>
+            <input checked name="add" type="checkbox">
+            Addition
+          </label>
+        </dt>
+        <dd>Range: (<input type="text" name="add_left_min" id="add_left_min" value="2"> to <input type="text" name="add_left_max" id="add_left_max" value="100">) +
+        (<input type="text" name="add_right_min" id="add_right_min" value="2"> to <input type="text" name="add_right_max" id="add_right_max" value="100">)</dd>
+        <dt>
+          <label>
+            <input checked name="sub" type="checkbox">
+            Subtraction
+          </label>
+        </dt>
+        <dd>Addition problems in reverse.</dd>
+        <dt>
+          <label>
+            <input checked name="mul" type="checkbox">
+            Multiplication
+          </label>
+        </dt>
+        <dd>Range: (<input type="text" name="mul_left_min" id="mul_left_min" value="2"> to <input type="text" name="mul_left_max" id="mul_left_max" value="12">) ×
+        (<input type="text" name="mul_right_min" id="mul_right_min" value="2"> to <input type="text" name="mul_right_max" id="mul_right_max" value="100">)</dd>
+        <dt>
+          <label>
+            <input checked name="div" type="checkbox">
+            Division
+          </label>
+        </dt>
+        <dd>Multiplication problems in reverse.</dd>
+      </dl>
+      <p>
+        Duration:
+        <select name="duration">
+          <option value="15">15 seconds</option>
+          <option value="30">30 seconds</option>
+          <option value="60">60 seconds</option>
+          <option selected value="120">120 seconds</option>
+          <option value="300">300 seconds</option>
+          <option value="600">600 seconds</option>
+        </select>
+      </p>
+      <input type="submit" value="Start Single Player">
+    </form>
+
+    <button id="createRoom">Create Multiplayer Room</button>
+    <p>Join existing room: <input id="joinRoomId" type="text"> <button id="joinRoom">Join</button></p>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('gameSettingsForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        let queryString = "?";
+        formData.forEach(function(value, key) {
+          queryString += encodeURIComponent(key) + "=" + encodeURIComponent(value) + "&";
+        });
+        queryString = queryString.slice(0, -1);
+        window.open("index.html" + queryString, "_blank"); // Open in new tab
+      });
+
+      document.getElementById('createRoom').addEventListener('click', function() {
+        const formData = new FormData(document.getElementById('gameSettingsForm'));
+        let queryString = "?";
+        formData.forEach(function(value, key) {
+          queryString += encodeURIComponent(key) + "=" + encodeURIComponent(value) + "&";
+        });
+        const roomId = prompt('Enter a Room ID (or leave empty for random):') || Math.random().toString(36).substring(2, 8);
+        queryString += "room=" + encodeURIComponent(roomId);
+        alert(`Room created with ID: ${roomId}. Share this ID with others!`);
+        window.open("index.html" + queryString, "_blank"); // Open in new tab
+      });
+
+      document.getElementById('joinRoom').addEventListener('click', function() {
+        const formData = new FormData(document.getElementById('gameSettingsForm'));
+        let queryString = "?";
+        formData.forEach(function(value, key) {
+          queryString += encodeURIComponent(key) + "=" + encodeURIComponent(value) + "&";
+        });
+        const roomId = document.getElementById('joinRoomId').value.trim();
+        if (!roomId) {
+          alert('Please enter a room ID to join!');
+          return;
+        }
+        queryString += "room=" + encodeURIComponent(roomId);
+        window.open("index.html" + queryString, "_blank"); // Open in new tab
+      });
+    });
+  </script>
+</body>
+</html>
